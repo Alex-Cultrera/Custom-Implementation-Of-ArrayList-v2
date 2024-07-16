@@ -2,6 +2,8 @@ package com.coderscampus.assignment7;
 
 import java.util.Arrays;
 
+import com.coderscampus.arraylist.CustomList;
+
 public class CustomArrayList<T> implements CustomList<T> {
 	Object[] myItems = new Object[10];
 	int size = 0;
@@ -25,6 +27,18 @@ public class CustomArrayList<T> implements CustomList<T> {
 	@Override
 	public T get(int index) {
 		return (T) myItems[index];
+	}
+
+	@Override
+	public boolean add(int index, T item) throws IndexOutOfBoundsException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public T remove(int index) throws IndexOutOfBoundsException {
+		// TODO Auto-generated method stub
+		return null;
 	} 
 
 }
