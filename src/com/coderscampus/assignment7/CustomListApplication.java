@@ -18,9 +18,6 @@ public class CustomListApplication {
 
 				// and continue to add another 10, 20 or 40 more elements to myCustomList
 				// method below will quickly add specified number elements to the CustomArrayList
-				Elements elements = new Elements();
-				elements.addElementsToCustomList(10, myCustomList);
-
 				
 				// then validate that all the elements inserted actually exist in the data structure
 				for (int i = 0; i < myCustomList.getSize(); i++) {
