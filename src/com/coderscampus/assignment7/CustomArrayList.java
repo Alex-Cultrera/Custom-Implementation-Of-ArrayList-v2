@@ -26,6 +26,9 @@ public class CustomArrayList<T> implements CustomList<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T get(int index) {
+		if (index >= myItems.length) {
+			throw new ArrayIndexOutOfBoundsException();
+			}
 		return (T) myItems[index];
 	}
 
