@@ -1,6 +1,7 @@
 package com.coderscampus.assignment7;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
@@ -34,16 +35,15 @@ class CustomArrayListTest {
 		}
 	}
 
-//	why is this test failing???
-//	@Test
-//	public void should_throw_exception_when_trying_to_get_item_at_index_10() {
-////	Arrange
-//		CustomList<String> testListOfStrings = new CustomArrayList<>();
-////	Act
-//		String eleventhItem = testListOfStrings.get(10);
-////	Assert
-//		assertThrows(ArrayIndexOutOfBoundsException.class, () -> System.out.println(eleventhItem));
-//	}
+	@Test
+	public void should_throw_exception_when_trying_to_get_item_at_index_10() {
+//	Arrange
+		CustomList<String> testListOfStrings = new CustomArrayList<>();
+//	Act
+		
+//	Assert
+		assertThrows(ArrayIndexOutOfBoundsException.class, () -> testListOfStrings.get(10));
+	}
 
 //	***TEST*** add(T item) 
 	@Test
@@ -154,7 +154,7 @@ class CustomArrayListTest {
 	}
 
 	@Test
-	void should_add_new_item_at_specified_index_and_move_existing_items_at_that_index_back_one() {
+	void should_move_sequential_non_null_items_starting_at_index_back_one_and_add_item_at_specified_index() {
 //		Arrange
 		CustomList<String> newTestListOfStrings = new CustomArrayList<>();
 //		Act
@@ -171,7 +171,7 @@ class CustomArrayListTest {
 	}
 
 	@Test
-	void should_not_change_index_of_items_with_index_less_than_specified_index_when_adding_item() {
+	void should_not_move_items_with_index_less_than_specified_index_when_adding_item() {
 //		Arrange
 		CustomList<String> newTestListOfStrings = new CustomArrayList<>();
 //		Act
@@ -201,38 +201,32 @@ class CustomArrayListTest {
 //	***TEST***
 //	remove(int index)
 	@Test
-	void should_remove_item_at_specified_index_from_list() {
+	void should_remove_item_at_specified_index_and_reduce_index_by_one_for_items_with_index_higher_than_specified_index() {
 //		Arrange
+		CustomList<String> newTestListOfStrings = new CustomArrayList<>();
 //		Act
+		newTestListOfStrings.add(0, "originally index zero");
+		newTestListOfStrings.add(6, "originally index six");
+		newTestListOfStrings.add(7, "originally index seven");
+		newTestListOfStrings.add(8, "originally index eight");
+		newTestListOfStrings.add(9, "originally index nine");
+		newTestListOfStrings.remove(7);
 //		Assert
-	}
-
-	@Test
-	void should_not_be_null_at_removed_items_previous_index() {
-//		Arrange
-//		Act
-//		Assert
+		assertEquals(newTestListOfStrings.get(0), "originally index zero");
+		assertEquals(newTestListOfStrings.get(6), "originally index six");
+		assertEquals(newTestListOfStrings.get(7), "originally index eight");
+		assertEquals(newTestListOfStrings.get(8), "originally index nine");
+		assertEquals(newTestListOfStrings.get(9), null);
 	}
 
 	@Test
 	void should_throw_exception_if_index_specified_is_out_of_bounds_when_removal_attempted() {
 //		Arrange
+		CustomList<String> newTestListOfStrings = new CustomArrayList<>();
 //		Act
+		newTestListOfStrings.add(0, "originally index zero");
 //		Assert
-	}
-
-	@Test
-	void should_decrease_index_of_newer_items_by_1_when_removing_item() {
-//		Arrange
-//		Act
-//		Assert
-	}
-
-	@Test
-	void should_not_change_index_of_older_items_when_removing_item() {
-//		Arrange
-//		Act
-//		Assert
+		assertThrows(ArrayIndexOutOfBoundsException.class, () -> newTestListOfStrings.remove(10));
 	}
 
 }
