@@ -112,14 +112,23 @@ class CustomArrayListTest {
 	void should_get_correct_size_of_list() {
 //		Arrange
 		CustomList<String> newTestListOfStrings = new CustomArrayList<>();
+		CustomList<Integer> newTestListOfIntegers = new CustomArrayList<>();
 //		Act
 		newTestListOfStrings.add("one");
 		newTestListOfStrings.add("two");
 		newTestListOfStrings.add("three");
-		int expectedResult = newTestListOfStrings.getSize();
+		int expectedResultForStringListSize = newTestListOfStrings.getSize();
+		newTestListOfIntegers.add(4);
+		newTestListOfIntegers.add(7);
+		newTestListOfIntegers.add(1, 8);
+		newTestListOfIntegers.add(7, 9);
+		newTestListOfIntegers.add(10);
+		newTestListOfIntegers.remove(1);
+		int expectedResultForIntegerListSize = newTestListOfIntegers.getSize();
 //		Assert
-		assertFalse(expectedResult != 3);
-		assertEquals(expectedResult, 3);
+		assertFalse(expectedResultForStringListSize != 3);
+		assertEquals(expectedResultForStringListSize, 3);
+		assertEquals(expectedResultForIntegerListSize, 4);
 	}
 
 //	***TEST***

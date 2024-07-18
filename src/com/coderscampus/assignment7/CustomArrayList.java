@@ -6,30 +6,46 @@ import com.coderscampus.arraylist.CustomList;
 
 public class CustomArrayList<T> implements CustomList<T> {
 	Object[] myItems = new Object[10];
+	int indexCount = 0;
 	int size = 0;
+	
+	private void doubleBackingArray() {
+		myItems = Arrays.copyOf(myItems, myItems.length * 2);
+	}
+	
+	private void updateSizeAndIndexCount() {
+		int backingArrayLength = myItems.length;
+		int nullIndexes = 0;
+		int firstNullIndex = 0;
+		int n;
+		for (n = 0; n < backingArrayLength; n++) {
+			if (myItems[n] == null) {
+				nullIndexes++;
+			}
+		}
+		for (n = 0; n <= backingArrayLength; n++) {
+			if (n==backingArrayLength) {
+				doubleBackingArray();
+			} 
+			if (myItems[n] == null) {
+				firstNullIndex = n;
+				break;
+			}
+		}
+		this.size = backingArrayLength - nullIndexes;
+		this.indexCount = firstNullIndex;
+	}
 
 	@Override
 	public boolean add(T item) {
-		if (size == myItems.length) {
-			myItems = Arrays.copyOf(myItems, myItems.length * 2);
-		}
-		if (myItems[size] == null) {
-			myItems[size] = item;
-			size++;
-		} else {
-			int s;
-			for (s = size; s == myItems.length; s++) {
-				if (s == myItems.length) {
-					myItems = Arrays.copyOf(myItems, myItems.length * 2);
-				}
-				if (myItems[s] == null) {
-					myItems[s] = item;
-					size++;
-					break;
-				}
-				size++;
-			}
-		}
+		if (indexCount == myItems.length) {
+			doubleBackingArray();
+			myItems[indexCount] = item;
+			updateSizeAndIndexCount();
+		} else if (myItems[indexCount] == null) {
+			myItems[indexCount] = item;
+			updateSizeAndIndexCount();
+		} 
 		return true;
 	}
 
@@ -41,7 +57,7 @@ public class CustomArrayList<T> implements CustomList<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T get(int index) throws ArrayIndexOutOfBoundsException {
-		if (index >= myItems.length) {
+		if ((index >= myItems.length) || (index < 0)) {
 			throw new ArrayIndexOutOfBoundsException();
 		}
 		return (T) myItems[index];
@@ -49,49 +65,80 @@ public class CustomArrayList<T> implements CustomList<T> {
 
 	@Override
 	public boolean add(int index, T item) throws IndexOutOfBoundsException {
-		if (index >= myItems.length) {
-			throw new IndexOutOfBoundsException();
-		}
-		if (index == myItems.length) {
-			myItems = Arrays.copyOf(myItems, myItems.length * 2);
-		}
-		if (index == size) {
-			size++;
-		}		
-		int remainingIndexes = myItems.length - index;
-		int nullIndex = 0;
-		int notNull = 0;
+		int countIndexAndRemainingIndexes = myItems.length - index;
+		int nextNullIndex = 0;
+		int remainingIndexesNotNull = 0;
 		int c;
 		for (c = index+1; c < myItems.length; c++) {
 			if (myItems[c] == null) {
-				nullIndex = c;
+				nextNullIndex = c;
 				break;
 			} else {
-				notNull++;
+				remainingIndexesNotNull++;
 			}
 		}
 		int n;
-		if (myItems[index] == null) {
+		if ((index >= myItems.length) || (index < 0)) {
+			throw new IndexOutOfBoundsException();
+		} else if (myItems[index] == null) {
 			myItems[index] = item;
-		} else if ((myItems[index] != null) && (notNull == remainingIndexes-1)) {
-			myItems = Arrays.copyOf(myItems, myItems.length * 2);
-			for (n = index + remainingIndexes-1; n>=index; n--) {
+			updateSizeAndIndexCount();
+		} else if ((myItems[index] != null) && (remainingIndexesNotNull == countIndexAndRemainingIndexes-1)) {
+			doubleBackingArray();
+			for (n = index+countIndexAndRemainingIndexes-1; n>=index; n--) {
 				myItems[n+1] = myItems[n];
 			} 
 			myItems[index] = item;
+			updateSizeAndIndexCount();
 		} else {
-			for (n = nullIndex; n>index; n--) {
+			for (n = nextNullIndex; n>index; n--) {
 				myItems[n] = myItems[n-1];
 			} 
 			myItems[index] = item;
+			updateSizeAndIndexCount();
 		}
 		return true;
 	}
 
 	@Override
 	public T remove(int index) throws IndexOutOfBoundsException {
-		// TODO Auto-generated method stub
+		if ((index >= myItems.length) || (index < 0)) {
+			throw new IndexOutOfBoundsException();
+		}
 		return null;
 	}
 
 }
+
+
+
+//consider deleting this:
+//else {
+//	int s;
+//	for (s = size; s == myItems.length; s++) {
+//		if (s == myItems.length) {
+//			doubleBackingArray();
+//			myItems[s] = item;
+//			size++;
+//			break;
+//		}
+//		if (myItems[s] == null) {
+//			myItems[s] = item;
+//			size++;
+//			break;
+//		}
+//		size++;
+//	}
+//}
+
+
+//if (index == myItems.length) {
+//	myItems = Arrays.copyOf(myItems, myItems.length * 2);
+//}
+//if (index == size) {
+//	size++;
+//}		
+	
+
+
+
