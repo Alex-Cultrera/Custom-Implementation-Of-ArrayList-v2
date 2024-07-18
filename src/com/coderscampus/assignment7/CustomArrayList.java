@@ -10,14 +10,26 @@ public class CustomArrayList<T> implements CustomList<T> {
 
 	@Override
 	public boolean add(T item) {
-		while (myItems[size] != null) {
+		if (size == myItems.length) {
+			myItems = Arrays.copyOf(myItems, myItems.length * 2);
+		}
+		if (myItems[size] == null) {
+			myItems[size] = item;
 			size++;
-			if (size == myItems.length) {
-				myItems = Arrays.copyOf(myItems, myItems.length * 2);
+		} else {
+			int s;
+			for (s = size; s == myItems.length; s++) {
+				if (s == myItems.length) {
+					myItems = Arrays.copyOf(myItems, myItems.length * 2);
+				}
+				if (myItems[s] == null) {
+					myItems[s] = item;
+					size++;
+					break;
+				}
+				size++;
 			}
 		}
-		myItems[size] = item;
-		size++;
 		return true;
 	}
 
