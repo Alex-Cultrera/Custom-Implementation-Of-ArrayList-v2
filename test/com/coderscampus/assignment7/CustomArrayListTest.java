@@ -15,11 +15,23 @@ class CustomArrayListTest {
 //	Arrange
 		CustomList<String> newTestListOfStrings = new CustomArrayList<>();
 //	Act
-		String firstItem = newTestListOfStrings.get(0);
-		String tenthItem = newTestListOfStrings.get(9);
+		int i;
 //	Assert
-		assertEquals(firstItem, null);
-		assertEquals(tenthItem, null);
+		for (i = 0; i < 10; i++) {
+			assertEquals(newTestListOfStrings.get(i), null);
+		}
+	}
+
+	@Test
+	void should_create_new_custom_array_list_of_10_empty_non_string_items() {
+//		Arrange
+		CustomList<Integer> newTestListOfIntegers = new CustomArrayList<>();
+//		Act
+		int i;
+//		Assert
+		for (i = 0; i < 10; i++) {
+			assertEquals(newTestListOfIntegers.get(i), null);
+		}
 	}
 
 //	why is this test failing???
@@ -33,18 +45,6 @@ class CustomArrayListTest {
 //		assertThrows(ArrayIndexOutOfBoundsException.class, () -> System.out.println(eleventhItem));
 //	}
 
-	@Test
-	void should_create_new_custom_array_list_of_10_empty_non_string_items() {
-//		Arrange
-		CustomList<Integer> newTestListOfIntegers = new CustomArrayList<>();
-//		Act
-		Integer firstItem = newTestListOfIntegers.get(0);
-		Integer tenthItem = newTestListOfIntegers.get(9);
-//		Assert
-		assertEquals(firstItem, null);
-		assertEquals(tenthItem, null);
-	}
-
 //	***TEST*** add(T item) 
 	@Test
 	void should_add_1_item_to_list() {
@@ -52,8 +52,12 @@ class CustomArrayListTest {
 		CustomList<Integer> newTestListOfIntegers = new CustomArrayList<>();
 //		Act
 		newTestListOfIntegers.add(4);
+		int i;
 //		Assert
 		assertEquals(newTestListOfIntegers.get(0), 4);
+		for (i = 1; i < 10; i++) {
+			assertEquals(newTestListOfIntegers.get(i), null);
+		}
 	}
 
 	@Test
@@ -66,8 +70,9 @@ class CustomArrayListTest {
 			newTestListOfIntegers.add(i + 1);
 		}
 //		Assert
-		assertEquals(newTestListOfIntegers.get(0), 1);
-		assertEquals(newTestListOfIntegers.get(9), 10);
+		for (i = 0; i < 10; i++) {
+			assertEquals(newTestListOfIntegers.get(i), i + 1);
+		}
 
 	}
 
@@ -80,9 +85,10 @@ class CustomArrayListTest {
 		for (i = 0; i < 11; i++) {
 			newTestListOfIntegers.add(i + 1);
 		}
-//		Assert
-		assertEquals(newTestListOfIntegers.get(0), 1);
-		assertEquals(newTestListOfIntegers.get(10), 11);
+//		Assert   
+		for (i = 0; i < 11; i++) {
+			assertEquals(newTestListOfIntegers.get(i), i + 1);
+		}
 	}
 
 	@Test
@@ -95,8 +101,9 @@ class CustomArrayListTest {
 			newTestListOfIntegers.add(i + 1);
 		}
 //		Assert
-		assertEquals(newTestListOfIntegers.get(0), 1);
-		assertEquals(newTestListOfIntegers.get(39), 40);
+		for (i = 0; i < 40; i++) {
+			assertEquals(newTestListOfIntegers.get(i), i + 1);
+		}
 	}
 
 //	***TEST***
@@ -111,7 +118,7 @@ class CustomArrayListTest {
 		newTestListOfStrings.add("three");
 		int expectedResult = newTestListOfStrings.getSize();
 //		Assert
-		assertFalse(expectedResult==4);
+		assertFalse(expectedResult != 3);
 		assertEquals(expectedResult, 3);
 	}
 
@@ -120,13 +127,16 @@ class CustomArrayListTest {
 	@Test
 	void should_get_item_in_list_at_specified_index() {
 //		Arrange
-		CustomList<String> newTestListOfStrings = new CustomArrayList<>();
+		CustomList<Integer> newTestListOfIntegers = new CustomArrayList<>();
 //		Act
-		newTestListOfStrings.add("one");
-		newTestListOfStrings.add("two");
-		newTestListOfStrings.add("three");
+		int i;
+		for (i = 0; i < 14; i++) {
+			newTestListOfIntegers.add(i + 1);
+		}
 //		Assert
-		assertEquals(newTestListOfStrings.get(2), "three");
+		for (i = 0; i < 14; i++) {
+			assertEquals(newTestListOfIntegers.get(i), i + 1);
+		}
 	}
 
 //	***TEST***
@@ -141,21 +151,51 @@ class CustomArrayListTest {
 		assertEquals(newTestListOfStrings.get(0), null);
 		assertEquals(newTestListOfStrings.get(1), null);
 		assertEquals(newTestListOfStrings.get(2), "three");
-		
 	}
 
 	@Test
-	void should_increase_index_by_1_for_items_with_index_equal_to_or_greater_than_specified_index_when_adding_item() {
+	void should_add_new_item_at_specified_index_and_move_existing_items_at_that_index_back_one() {
 //		Arrange
+		CustomList<String> newTestListOfStrings = new CustomArrayList<>();
 //		Act
+		newTestListOfStrings.add(0, "originally index zero");
+		newTestListOfStrings.add(6, "originally index six");
+		newTestListOfStrings.add(7, "originally index seven");
+		newTestListOfStrings.add(8, "originally index eight");
+		newTestListOfStrings.add(9, "originally index nine");
+		newTestListOfStrings.add(6, "new index six");
 //		Assert
+		assertEquals(newTestListOfStrings.get(6), "new index six");
+		assertEquals(newTestListOfStrings.get(7), "originally index six");
+		assertEquals(newTestListOfStrings.get(10), "originally index nine");
 	}
 
 	@Test
-	void should_not_change_index_by_of_items_with_index_less_than_specified_index_when_adding_item() {
+	void should_not_change_index_of_items_with_index_less_than_specified_index_when_adding_item() {
 //		Arrange
+		CustomList<String> newTestListOfStrings = new CustomArrayList<>();
 //		Act
+		newTestListOfStrings.add(0, "originally index zero");
+		newTestListOfStrings.add(6, "originally index six");
+		newTestListOfStrings.add(7, "originally index seven");
+		newTestListOfStrings.add(8, "originally index eight");
+		newTestListOfStrings.add("originally index one");
+		newTestListOfStrings.add("originally index two");
+		newTestListOfStrings.add(9, "originally index nine");
+		newTestListOfStrings.add(2, "new index two");
+		newTestListOfStrings.add(6, "new index six");
 //		Assert
+		assertEquals(newTestListOfStrings.get(10), "originally index nine");
+		assertEquals(newTestListOfStrings.get(9), "originally index eight");
+		assertEquals(newTestListOfStrings.get(8), "originally index seven");
+		assertEquals(newTestListOfStrings.get(7), "originally index six");
+		assertEquals(newTestListOfStrings.get(6), "new index six");
+		assertEquals(newTestListOfStrings.get(5), null);
+		assertEquals(newTestListOfStrings.get(4), null);
+		assertEquals(newTestListOfStrings.get(3), "originally index two");
+		assertEquals(newTestListOfStrings.get(2), "new index two");
+		assertEquals(newTestListOfStrings.get(1), "originally index one");
+		assertEquals(newTestListOfStrings.get(0), "originally index zero");
 	}
 
 //	***TEST***
