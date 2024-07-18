@@ -40,7 +40,7 @@ class CustomArrayListTest {
 //	Arrange
 		CustomList<String> testListOfStrings = new CustomArrayList<>();
 //	Act
-		
+
 //	Assert
 		assertThrows(ArrayIndexOutOfBoundsException.class, () -> testListOfStrings.get(10));
 	}
@@ -170,13 +170,14 @@ class CustomArrayListTest {
 		newTestListOfStrings.add(0, "originally index zero");
 		newTestListOfStrings.add(6, "originally index six");
 		newTestListOfStrings.add(7, "originally index seven");
-		newTestListOfStrings.add(8, "originally index eight");
 		newTestListOfStrings.add(9, "originally index nine");
 		newTestListOfStrings.add(6, "new index six");
 //		Assert
 		assertEquals(newTestListOfStrings.get(6), "new index six");
 		assertEquals(newTestListOfStrings.get(7), "originally index six");
-		assertEquals(newTestListOfStrings.get(10), "originally index nine");
+		assertEquals(newTestListOfStrings.get(8), "originally index seven");
+		assertEquals(newTestListOfStrings.get(9), "originally index nine");
+		assertThrows(ArrayIndexOutOfBoundsException.class, () -> newTestListOfStrings.get(10));
 	}
 
 	@Test
@@ -235,7 +236,7 @@ class CustomArrayListTest {
 //		Act
 		newTestListOfStrings.add(0, "originally index zero");
 //		Assert
-		assertThrows(ArrayIndexOutOfBoundsException.class, () -> newTestListOfStrings.remove(10));
+		assertThrows(IndexOutOfBoundsException.class, () -> newTestListOfStrings.remove(10));
 	}
 
 }

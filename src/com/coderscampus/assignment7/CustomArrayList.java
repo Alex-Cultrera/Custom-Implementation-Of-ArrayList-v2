@@ -8,11 +8,11 @@ public class CustomArrayList<T> implements CustomList<T> {
 	Object[] myItems = new Object[10];
 	int indexCount = 0;
 	int size = 0;
-	
+
 	private void doubleBackingArray() {
 		myItems = Arrays.copyOf(myItems, myItems.length * 2);
 	}
-	
+
 	private void updateSizeAndIndexCount() {
 		int backingArrayLength = myItems.length;
 		int nullIndexes = 0;
@@ -24,9 +24,9 @@ public class CustomArrayList<T> implements CustomList<T> {
 			}
 		}
 		for (n = 0; n <= backingArrayLength; n++) {
-			if (n==backingArrayLength) {
+			if (n == backingArrayLength) {
 				doubleBackingArray();
-			} 
+			}
 			if (myItems[n] == null) {
 				firstNullIndex = n;
 				break;
@@ -45,7 +45,7 @@ public class CustomArrayList<T> implements CustomList<T> {
 		} else if (myItems[indexCount] == null) {
 			myItems[indexCount] = item;
 			updateSizeAndIndexCount();
-		} 
+		}
 		return true;
 	}
 
@@ -69,7 +69,7 @@ public class CustomArrayList<T> implements CustomList<T> {
 		int nextNullIndex = 0;
 		int remainingIndexesNotNull = 0;
 		int c;
-		for (c = index+1; c < myItems.length; c++) {
+		for (c = index + 1; c < myItems.length; c++) {
 			if (myItems[c] == null) {
 				nextNullIndex = c;
 				break;
@@ -83,17 +83,17 @@ public class CustomArrayList<T> implements CustomList<T> {
 		} else if (myItems[index] == null) {
 			myItems[index] = item;
 			updateSizeAndIndexCount();
-		} else if ((myItems[index] != null) && (remainingIndexesNotNull == countIndexAndRemainingIndexes-1)) {
+		} else if ((myItems[index] != null) && (remainingIndexesNotNull == countIndexAndRemainingIndexes - 1)) {
 			doubleBackingArray();
-			for (n = index+countIndexAndRemainingIndexes-1; n>=index; n--) {
-				myItems[n+1] = myItems[n];
-			} 
+			for (n = index + countIndexAndRemainingIndexes - 1; n >= index; n--) {
+				myItems[n + 1] = myItems[n];
+			}
 			myItems[index] = item;
 			updateSizeAndIndexCount();
 		} else {
-			for (n = nextNullIndex; n>index; n--) {
-				myItems[n] = myItems[n-1];
-			} 
+			for (n = nextNullIndex; n > index; n--) {
+				myItems[n] = myItems[n - 1];
+			}
 			myItems[index] = item;
 			updateSizeAndIndexCount();
 		}
@@ -102,43 +102,21 @@ public class CustomArrayList<T> implements CustomList<T> {
 
 	@Override
 	public T remove(int index) throws IndexOutOfBoundsException {
+		int n;
 		if ((index >= myItems.length) || (index < 0)) {
 			throw new IndexOutOfBoundsException();
+		} else {
+			for (n = index; n <= myItems.length - 1; n++) {
+				if (n == myItems.length - 1) {
+					myItems[n] = null;
+					updateSizeAndIndexCount();
+					break;
+				} else {
+					myItems[n] = myItems[n + 1];
+				}
+			}
 		}
 		return null;
 	}
 
 }
-
-
-
-//consider deleting this:
-//else {
-//	int s;
-//	for (s = size; s == myItems.length; s++) {
-//		if (s == myItems.length) {
-//			doubleBackingArray();
-//			myItems[s] = item;
-//			size++;
-//			break;
-//		}
-//		if (myItems[s] == null) {
-//			myItems[s] = item;
-//			size++;
-//			break;
-//		}
-//		size++;
-//	}
-//}
-
-
-//if (index == myItems.length) {
-//	myItems = Arrays.copyOf(myItems, myItems.length * 2);
-//}
-//if (index == size) {
-//	size++;
-//}		
-	
-
-
-
